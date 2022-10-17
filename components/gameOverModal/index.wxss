@@ -1,7 +1,7 @@
 /* 游戏结束 */
 .gameOver_dialog{
   /* background-color: rgb(255, 255, 255,.1) !important; */
-  width: 650rpx !important;
+  width: 575rpx !important;
 }
 .gameover_img_item{
   height:370rpx;
@@ -14,5 +14,6 @@
   width: 406rpx;
   height: 124rpx;
   background: url('https://ss.hengyuwh.com/sss/ylgy/image/game.restart.png') no-repeat;
+  background-size: 100%;
 
 }

@@ -2,6 +2,7 @@
   "usingComponents": {
     "levelSelect":"/components/levelselect/index",
     "settingBtn":"/components/settingBtn/index",
-    "gameOverModal":"/components/gameOverModal/index"
+    "gameOverModal":"/components/gameOverModal/index",
+    "btnGroup":"/components/btnGroup/index"
   }
 }

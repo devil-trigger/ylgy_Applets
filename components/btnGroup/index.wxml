@@ -1,0 +1,6 @@
+<view class="flex-container flex-between">
+      <view class="btn" bindtap="tapBtn" data-tapType="pop">弹出</view>
+      <view class="btn" bindtap="tapBtn" data-tapType="undo">撤销</view>
+      <view class="btn" bindtap="tapBtn" data-tapType="wash">洗牌</view>
+      <view class="btn" bindtap="tapBtn" data-tapType="levelUp">next</view>
+</view>

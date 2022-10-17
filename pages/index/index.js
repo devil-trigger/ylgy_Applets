@@ -1,41 +1,46 @@
 import {
   iconsArr
-} from "../../utils/util"
+} from "../../utils/util";
 const app = getApp();
+// const SoundEffect=app.globalData.innerAudioContextSoundEffect;
+// SoundEffect.autoplay = true;//音效不循环播放
 Page({
   data: {
     scene: [], //元数据  （渲染的核心数据）
     icons: iconsArr, //所有的点击图标的icon列表 (数据在 util.js 编辑)
-    maxLevel: 3, //最大关卡
+    maxLevel: 10, //最大关卡
     level: 1, // 等级(当前关卡)
     queue: [], //被选中的牌的数据
     sortedQueue: {}, //排序内容
     finished: false, //是否完成
     tipText: '',
     animating: false, //动画开关
-    levelList: [],
-    modalName:false,//游戏失败模态框
-    soundSwitch:true,//游戏音效开关
+    levelList: [],//选关列表
+    modalName: false, //游戏失败模态框
+    soundSwitch: true, //游戏音效开关
   },
 
   onLoad: function (e) {
-    // console.log(btnFun);
-    let levelList = []
+    console.log(app);
+    // console.log(app.globalData.innerAudioContextSoundEffect);
+    let levelList = new Array();
     for (let index = 0; index < this.data.maxLevel; index++) {
       levelList.push(`第 ${index+1} 关`)
     }
     this.setData({
       scene: this.makeScene(1), //默认第一关 (初始化)
-      levelList
+      levelList,//关卡选择列表
     })
     this.checkCover(); //附加阴影
-    // this.setData
     // console.log(this.data.icons);
-    let that = this
+    this.watchData();//数据监听
+  },
+  /**
+   * 监听数据
+   */
+  watchData() {
+    let that = this;
     app.watch(this, { // 队列区排序
-      // scene: function (e) {
-      //   // console.log(e);
-      // },
       queue: function (queue) {
         // console.log(e);
         const cache = {};
@@ -47,7 +52,6 @@ Page({
             cache[symbol.icon] = [symbol];
           }
         }
-        
         const temp = [];
         for (const symbols of Object.values(cache)) {
           temp.push(...(symbols));
@@ -67,14 +71,6 @@ Page({
       }
     })
   },
-
-  // /**
-  //  * 监听数据
-  //  */
-  // watchData() {
-
-  // },
-
   /**
    * 关卡切换  ----- 选择器监听
    * @param {*} e 事件对象
@@ -107,7 +103,7 @@ Page({
     });
   },
   /**
-   *  核心算法-------------------------------------------warning------------------------------------------
+   *  核心算法-----------------------------------------warning----------------------------------------
    * @param {*} level 关卡
    */
   makeScene(level) {
@@ -225,7 +221,10 @@ Page({
       for (let j = i + 1; j < updateScene.length; j++) {
         const compare = updateScene[j];
         if (compare.status !== 0) continue;
-        const {  x,  y } = compare;
+        const {
+          x,
+          y
+        } = compare;
         // 处理交集也就是选中情况
         // 两区域有交集视为选中
         // 两区域不重叠情况取反即为交集
@@ -260,9 +259,9 @@ Page({
       find.y = 700;
       this.setData({
         queue: updateQueue,
-        [find.status]:0,
-        [find.x]:100 * Math.floor(8 * Math.random()),
-        [find.y]:700
+        [find.status]: 0,
+        [find.x]: 100 * Math.floor(8 * Math.random()),
+        [find.y]: 700
       })
       // 遮挡检测
       this.checkCover(this.data.scene);
@@ -283,7 +282,7 @@ Page({
       // queue = updateQueue;
       this.setData({
         queue: updateQueue,
-        [find.status]:0
+        [find.status]: 0
       })
       find.status = 0;
       // console.log(find);
@@ -295,6 +294,10 @@ Page({
    */
   wash() {
     this.checkCover(this.washScene(this.data.level, this.data.scene));
+    app.playSoundEffect({
+      src:'xipai',
+      trigger:this.data.soundSwitch
+    })
   },
   /**
    * 下一关  & 关卡选择核心函数
@@ -323,8 +326,8 @@ Page({
       queue: [],
       level: 1,
       finished: false,
-      modalName:false,//关闭模态框（gameover）
-      animating:false
+      modalName: false, //关闭模态框（gameover）
+      animating: false
     })
     // 第一关初始化，并开启遮挡检查
     this.checkCover(this.makeScene(1));
@@ -338,7 +341,7 @@ Page({
     if (this.data.finished || this.data.animating) return;
     // 拷贝一份Scene
     const symbol = this.data.scene[idx];
-    
+
     // 覆盖了的和已经在队列里的也不处理
     if (symbol.isCover || symbol.status !== 0) return;
     //置为可以选中状态
@@ -359,11 +362,20 @@ Page({
     await this.waitTimeout(300);
     // 拿到与他匹配的所有icon
     const filterSame = this.data.queue.filter((sb) => sb.icon === symbol.icon);
+
+    app.playSoundEffect({
+      src:'card_select',
+      trigger:this.data.soundSwitch
+    })
     // console.log(filterSame);
     // 选中的三个配对成功表示已经是三连了 (达成游戏胜利条件)
     if (filterSame.length === 3) {
       // 由于icon的类型一样，留下队列中的不一样的剩余内容重新赋值
       // this.data.queue = this.datat.queue.filter((sb) => sb.icon !== symbol.icon);
+      app.playSoundEffect({
+        src:'card_right',
+        trigger:this.data.soundSwitch
+      })
       this.setData({
         queue: this.data.queue.filter((sb) => sb.icon !== symbol.icon)
       })
@@ -371,7 +383,7 @@ Page({
       for (const sb of filterSame) {
         const find = this.data.scene.find((i) => i.id === sb.id);
         // 将他们的状态变为2 通过opacity 属性 来隐藏icon
-        if (find){
+        if (find) {
           find.status = 2;
         }
         // console.log(find);
@@ -381,7 +393,7 @@ Page({
     // 当格子占满 ---------- game over 游戏失败
     if (this.data.queue.length === 7) {
       this.setData({
-        modalName:true
+        modalName: true
       })
       return
     }
@@ -403,7 +415,7 @@ Page({
       //   level:this.data.level + 1,
       //   queue: []
       // })
-      this.levelUp({});//下一关
+      this.levelUp({}); //下一关
       // this.checkCover(this.makeScene(this.data.level));
       // console.log('ssss');
     } else {
@@ -412,64 +424,32 @@ Page({
     }
     // 动画结束
     this.setData({
-      animating:false
+      animating: false
     })
   },
-
   onReady: function () {},
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
+  // 生命周期函数--监听页面显示
+  onShow: function () {},
+  // 生命周期函数--监听页面隐藏
+  onHide: function () {},
+  //生命周期函数--监听页面卸载
+  onUnload: function () {},
+  //页面相关事件处理函数--监听用户下拉动作
+  onPullDownRefresh: function () {},
+  // 页面上拉触底事件的处理函数
+  onReachBottom: function () {},
+  //用户点击右上角分享
+  onShareAppMessage: function () {},
   /**
    * 音效开关
    * @param {*} e 事件对象
    */
-  bindsoundSwitch(e){
+  bindsoundSwitch(e) {
     // console.log(e.detail);
-    if (e.detail) {
-      console.log('开启');
-    } else console.log('关闭音效');
+    if (e.detail) console.log('开启');
+    else console.log('关闭音效');
     this.setData({
-      soundSwitch:e.detail
+      soundSwitch: e.detail
     })
-
   }
 })

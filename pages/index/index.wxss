@@ -12,6 +12,8 @@
   background: url('https://ss.hengyuwh.com/sss/ylgy/image/ylgy_img/bg.png') no-repeat;
   background-size: 100% 100%;
   background-color: rgb(203, 255, 144);
+  border-bottom: 10rpx solid rgb(81, 146, 23);
+  border-radius: 5px;
   /* background-size: contain; */
 }
 
