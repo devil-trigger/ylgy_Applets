@@ -1,0 +1,13 @@
+@import '/assets/css/main.wxss';
+@import '/assets/css/icon.wxss';
+
+/* 公共 */
+.flex-container {
+  display: flex;
+  gap: 8px;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}

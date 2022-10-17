@@ -1,0 +1,29 @@
+/* 设置项 */
+.setting{
+  position: fixed;
+  top: 12vh;right:20rpx;
+  font-weight: bold;
+}
+.setting-item{
+  position: relative;
+  width: 70rpx;
+  height:70rpx;
+  display: flex;
+  align-content: center;
+  justify-content: center;align-items: center;
+}
+.setting-item .zhuan{
+  position: absolute;
+  animation: myfirst2 5s infinite linear;
+}
+@keyframes myfirst2
+{
+from {transform: rotate(0deg);}
+to {transform: rotate(359deg);}
+}
+  
+@keyframes myfirst
+{
+from {transform: rotate(0deg);}
+to {transform: rotate(-359deg);}
+}

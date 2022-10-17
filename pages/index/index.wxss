@@ -1,0 +1,94 @@
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 170rpx 0;
+  box-sizing: border-box;
+  /* margins-top: 3vh; */
+  width: 100vw;
+  height: 100vh;
+  /* padding: 20rpx 0; */
+  background: url('https://ss.hengyuwh.com/sss/ylgy/image/ylgy_img/bg.png') no-repeat;
+  background-size: 100% 100%;
+  background-color: rgb(203, 255, 144);
+  /* background-size: contain; */
+}
+
+
+
+
+/* 场景 */
+.item{
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+.scene-container {
+  width: 100%;
+  padding-bottom: 100%;
+  position: relative;
+  margin: 10% 0;
+  background-color: rgb(255, 255, 255,.25);
+}
+
+.scene-inner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  overflow: visible;
+  font-size: 28px;
+}
+.symbol{
+  width: 12.5%;
+  padding-bottom: 12.5%;
+  position: absolute;
+  transition: 0.3s;
+  left: 0;
+  top: 0;
+}
+.symbol-inner{
+  position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: 2px solid #444;
+    transition: 0.3s;
+    padding: 5px;
+}
+/* 选中框 组 */
+.queue-container {
+
+  border-radius: 8px;
+  width: 100%;
+  padding-bottom: 15%;
+  border: 2px solid gray;
+  margin-bottom: 60rpx;
+  box-sizing: border-box;
+}
+
+/* 功能按钮组 */
+.btn {
+  flex-grow: 1;
+  color: #fff;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+  word-break: keep-all;
+  /* color: white; */
+}

@@ -1,0 +1,19 @@
+/* 关卡  -title */
+.level {
+  /* margin-left: 10rpx; */
+  font-size: 50rpx;
+  position: relative;
+  left: 37rpx;
+}
+.level .cuIcon-unfold{
+  font-size:37rpx;
+}
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 70vh;
+}
+.picker{
+  margin-bottom: 50rpx;
+}

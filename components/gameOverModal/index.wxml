@@ -1,0 +1,16 @@
+<view class="cu-modal {{modalName?'show':''}}" >
+	<view class="cu-dialog gameOver_dialog">
+		<view class="cu-bar bg-white justify-end">
+			<view class="content"></view>
+		</view>
+		<view class="padding-xl bg-white " >
+			<view class="gameover_img_item">
+        <image src="/assets/game.over.png" mode="aspectFit" class="gameover_img"></image>
+      </view>
+      <view class="text-xxl">GAME OVER !</view>
+      <view class="flex justify-center margin-top">
+        <view class="gameRestart" bindtap="restart"></view>
+      </view>
+		</view>
+	</view>
+</view>

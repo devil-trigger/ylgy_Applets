@@ -1,0 +1,7 @@
+  <!-- 关卡选择 -->
+  <picker bindchange="bindPickerChange" value="{{index}}" range="{{levelList}}" >
+    <view class="picker">
+      <!-- {{levelList[index]}}sdas  -->
+      <view class="level" >第 {{level}} 关  <text class="cuIcon-unfold"></text></view>
+    </view>
+  </picker>

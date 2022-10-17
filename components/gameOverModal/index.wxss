@@ -1,0 +1,18 @@
+/* 游戏结束 */
+.gameOver_dialog{
+  /* background-color: rgb(255, 255, 255,.1) !important; */
+  width: 650rpx !important;
+}
+.gameover_img_item{
+  height:370rpx;
+}
+.gameover_img{
+  width:540rpx;
+  height: 300rpx;
+}
+.gameRestart{
+  width: 406rpx;
+  height: 124rpx;
+  background: url('https://ss.hengyuwh.com/sss/ylgy/image/game.restart.png') no-repeat;
+
+}
