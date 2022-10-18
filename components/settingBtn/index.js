@@ -1,11 +1,30 @@
 const innerAudioContext = wx.createInnerAudioContext({ useWebAudioImplement: true});
 innerAudioContext.src = 'https://ss.hengyuwh.com/sss/ylgy/Sound/bgM.mp3';
+innerAudioContext.volume=0.7;//音量
 innerAudioContext.autoplay=true;
-innerAudioContext.volume=0.75;//音量
+innerAudioContext.onEnded(function (e) {
+  innerAudioContext.play()  
+  console.log('重播');
+})
 Component({
   properties: {
     soundSwitch:{
       type:Boolean
+    },
+    modalName:{
+      type:Boolean
+    }
+  },
+  observers:{
+    'modalName':function (e) {
+      console.log(e);
+      if (e) {
+        console.log('失败了');
+        innerAudioContext.volume=0.4;//音量
+        setTimeout(() => {
+          innerAudioContext.volume=0.7;//音量
+        }, 3000);
+      }
     }
   },
   data: {
@@ -32,6 +51,12 @@ Component({
       switch (type) {
         case 'bgSwitch'://背景开关
           if (this.data.bgSwitch) innerAudioContext.pause(); else innerAudioContext.play() 
+          wx.showToast({
+            title: this.data.bgSwitch?'关闭背景音乐':'开启背景音乐',
+            duration: 1700,
+            icon: 'none',
+            mask: true
+          })
           // innerAudioContext.pause() 暂停  || innerAudioContext.play()  播放
           // innerAudioContext.stop() // 停止
           break;
@@ -44,7 +69,10 @@ Component({
       }
       this.setData(SwitchObj);
       // console.log(this.data);
-    }
+    },
+    // sliderchangeBGM(e){
+    //   console.log(e);
+    // }
   },
   options: {
     addGlobalClass: true

@@ -1,14 +1,11 @@
-
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 170rpx 0;
   box-sizing: border-box;
-  /* margins-top: 3vh; */
   width: 100vw;
   height: 100vh;
-  /* padding: 20rpx 0; */
   background: url('https://ss.hengyuwh.com/sss/ylgy/image/ylgy_img/bg.png') no-repeat;
   background-size: 100% 100%;
   background-color: rgb(203, 255, 144);
@@ -16,9 +13,6 @@
   border-radius: 5px;
   /* background-size: contain; */
 }
-
-
-
 
 /* 场景 */
 .item{
@@ -33,9 +27,20 @@
   padding-bottom: 100%;
   position: relative;
   margin: 10% 0;
-  background-color: rgb(255, 255, 255,.25);
+  /* background-color: rgb(255, 255, 255,.25); */
+  transition: all 1s;
 }
-
+.wash-item{
+  background-color: rgb(255, 255, 255,.25);
+  transition:all .7s;
+  z-index: 5 !important;
+}
+.zhuan{
+  transform: rotate(360deg);
+}
+.ting{
+  transform: rotate(0deg);
+}
 .scene-inner {
   position: absolute;
   left: 0;
@@ -44,6 +49,7 @@
   top: 0;
   overflow: visible;
   font-size: 28px;
+  z-index: 7;
 }
 .symbol{
   width: 12.5%;
@@ -89,7 +95,7 @@
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: border-color 0.25s;
   word-break: keep-all;
   /* color: white; */

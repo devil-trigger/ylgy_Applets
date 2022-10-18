@@ -1,8 +1,7 @@
 <!-- 设置项 -->
-<settingBtn bind:bindsoundSwitch='bindsoundSwitch' soundSwitch="{{soundSwitch}}"></settingBtn>
+<settingBtn bind:bindsoundSwitch='bindsoundSwitch' soundSwitch="{{soundSwitch}}" modalName="{{modalName}}"></settingBtn>
 <!-- 游戏失败 窗口 -->
 <gameOverModal modalName="{{modalName}}" soundSwitch="{{soundSwitch}}" bind:restart="restart"></gameOverModal>
-
 <view class="container">
   <!-- 关卡选择器 -->
   <levelSelect level="{{level}}" levelList="{{levelList}}" bind:bindPickerChange="bindPickerChange"></levelSelect>
@@ -17,16 +16,12 @@
           </view>
         </view>
       </view>
+      <!-- 刷新动画专用标签 -->
+      <view class="scene-inner wash-item {{wash?'zhuan':'ting'}}">  </view>
     </view>
     <!-- 选中框 -->
     <view class="queue-container flex-container flex-center"></view>
     <!-- 功能按钮组 -->
-    <!-- <view class="flex-container flex-between">
-      <view class="btn" bindtap="pop">弹出</view>
-      <view class="btn" bindtap="undo">撤销</view>
-      <view class="btn" bindtap="wash">洗牌</view>
-      <view class="btn" bindtap="levelUp">next</view>
-    </view> -->
     <btnGroup 
       bind:pop="pop"
       bind:undo="undo"

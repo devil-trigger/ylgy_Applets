@@ -2,26 +2,26 @@ import {
   iconsArr
 } from "../../utils/util";
 const app = getApp();
-// const SoundEffect=app.globalData.innerAudioContextSoundEffect;
-// SoundEffect.autoplay = true;//音效不循环播放
+const playSoundEffect = app.playSoundEffect; //音效方法
 Page({
   data: {
     scene: [], //元数据  （渲染的核心数据）
     icons: iconsArr, //所有的点击图标的icon列表 (数据在 util.js 编辑)
-    maxLevel: 10, //最大关卡
+    maxLevel:7, //最大关卡
     level: 1, // 等级(当前关卡)
     queue: [], //被选中的牌的数据
     sortedQueue: {}, //排序内容
     finished: false, //是否完成
     tipText: '',
     animating: false, //动画开关
-    levelList: [],//选关列表
+    levelList: [], //选关列表
     modalName: false, //游戏失败模态框
     soundSwitch: true, //游戏音效开关
+    wash:true,//棋盘 洗牌
   },
 
   onLoad: function (e) {
-    console.log(app);
+    // console.log(app);
     // console.log(app.globalData.innerAudioContextSoundEffect);
     let levelList = new Array();
     for (let index = 0; index < this.data.maxLevel; index++) {
@@ -29,11 +29,11 @@ Page({
     }
     this.setData({
       scene: this.makeScene(1), //默认第一关 (初始化)
-      levelList,//关卡选择列表
+      levelList, //关卡选择列表
     })
     this.checkCover(); //附加阴影
     // console.log(this.data.icons);
-    this.watchData();//数据监听
+    this.watchData(); //数据监听
   },
   /**
    * 监听数据
@@ -76,6 +76,8 @@ Page({
    * @param {*} e 事件对象
    */
   bindPickerChange(e) {
+    // console.log(e.detail.value);
+    if (this.data.level==(Number(e.detail.value)+1)) return;//选择的关卡与当前关卡相等
     this.levelUp(Number(e.detail.value))
   },
   /**
@@ -103,18 +105,18 @@ Page({
     });
   },
   /**
-   *  核心算法-----------------------------------------warning----------------------------------------
+   *  核心算法-----------------------------------------warning---------------------------------------------------------
    * @param {*} level 关卡
    */
   makeScene(level) {
     const curLevel = Math.min(this.data.maxLevel, level); // 获取当前关卡
-    const iconPool = this.data.icons.slice(0, 2 * curLevel); // 获取当前关卡应该拥有的icon数量
+    const iconPool = this.data.icons.slice(0, 3 * curLevel); // 获取当前关卡应该拥有的icon数量
     // 算出偏移量范围具体细节范围
     const offsetPool = [0, 25, -25, 50, -50].slice(0, 1 + curLevel);
-    //  最终的元数据数组
+    // 最终的元数据数组
     const scene = [];
     // 确定范围
-    //在一般情下 translate 的偏移量，如果是百分比的话，是按照自身的宽度或者高度去计算的，所以最大的偏移范围是百分800%
+    // 在一般情下 translate 的偏移量，如果是百分比的话，是按照自身的宽度或者高度去计算的，所以最大的偏移范围是百分800%
     // 然后通过Math.random 会小于百分之八百
     // 所以就会形成当前区间的随机数
     const range = [
@@ -193,7 +195,7 @@ Page({
     }
   },
   /**
-   * 检查是否被覆盖(给底层级的图片附加阴影)
+   * 检查是否被覆盖(给低层级的图片附加阴影)
    * @param {*} value 
    */
   checkCover(value) {
@@ -244,7 +246,6 @@ Page({
    * 弹出 - 按钮组
    */
   pop() {
-    // btnFun.pop()
     // 若选中队列中没有数据那么就退出
     if (!this.data.queue.length) return;
     const updateQueue = this.data.queue.slice();
@@ -262,6 +263,10 @@ Page({
         [find.status]: 0,
         [find.x]: 100 * Math.floor(8 * Math.random()),
         [find.y]: 700
+      })
+      playSoundEffect({
+        src: 'withdraw',
+        trigger: this.data.soundSwitch
       })
       // 遮挡检测
       this.checkCover(this.data.scene);
@@ -286,6 +291,11 @@ Page({
       })
       find.status = 0;
       // console.log(find);
+      // withdraw
+      playSoundEffect({
+        src: 'withdraw',
+        trigger: this.data.soundSwitch
+      })
       this.checkCover(this.data.scene);
     }
   },
@@ -294,9 +304,12 @@ Page({
    */
   wash() {
     this.checkCover(this.washScene(this.data.level, this.data.scene));
-    app.playSoundEffect({
-      src:'xipai',
-      trigger:this.data.soundSwitch
+    this.setData({
+      wash:!this.data.wash
+    })
+    playSoundEffect({
+      src: 'xipai',
+      trigger: this.data.soundSwitch
     })
   },
   /**
@@ -305,6 +318,7 @@ Page({
   levelUp(e) {
     // console.log(e);
     let level = typeof (e) == 'number' ? e : this.data.level
+    if (typeof (e) != 'number') playSoundEffect({src: 'next',trigger: this.data.soundSwitch});
     if (level >= this.data.maxLevel) return;
     // this.data.finished = false;
     // this.data.queue = [];
@@ -336,7 +350,8 @@ Page({
    * 点击 图标，加入选中框 （ ------------- 核心点击游戏功能 -------------- ）
    */
   async clickSymbol(e) {
-    let idx = e.currentTarget.dataset.index;
+    // console.log(e);return
+    let idx = e.detail;
     // 若已经完成了，就不处理
     if (this.data.finished || this.data.animating) return;
     // 拷贝一份Scene
@@ -363,18 +378,18 @@ Page({
     // 拿到与他匹配的所有icon
     const filterSame = this.data.queue.filter((sb) => sb.icon === symbol.icon);
 
-    app.playSoundEffect({
-      src:'card_select',
-      trigger:this.data.soundSwitch
+    playSoundEffect({
+      src: 'card_select',
+      trigger: this.data.soundSwitch
     })
     // console.log(filterSame);
     // 选中的三个配对成功表示已经是三连了 (达成游戏胜利条件)
     if (filterSame.length === 3) {
       // 由于icon的类型一样，留下队列中的不一样的剩余内容重新赋值
       // this.data.queue = this.datat.queue.filter((sb) => sb.icon !== symbol.icon);
-      app.playSoundEffect({
-        src:'card_right',
-        trigger:this.data.soundSwitch
+      playSoundEffect({
+        src: 'card_right',
+        trigger: this.data.soundSwitch
       })
       this.setData({
         queue: this.data.queue.filter((sb) => sb.icon !== symbol.icon)
@@ -383,11 +398,8 @@ Page({
       for (const sb of filterSame) {
         const find = this.data.scene.find((i) => i.id === sb.id);
         // 将他们的状态变为2 通过opacity 属性 来隐藏icon
-        if (find) {
-          find.status = 2;
-        }
+        if (find) find.status = 2;
         // console.log(find);
-
       }
     }
     // 当格子占满 ---------- game over 游戏失败
@@ -402,12 +414,19 @@ Page({
       if (this.data.level === this.data.maxLevel) {
         wx.showToast({
           title: '已完成所有关卡',
-          duration: 1200,
+          duration: 2000,icon:'none',
           mask: true,
+        })
+        playSoundEffect({
+          src: 'victory',
+          trigger: this.data.soundSwitch
         })
         this.setData({
           queue: []
         })
+        setTimeout(() => {
+          this.restart();//回到第一关
+        }, 2000);
         return;
       }
       //否则加一关 ,并使内容重新初始化
@@ -418,10 +437,7 @@ Page({
       this.levelUp({}); //下一关
       // this.checkCover(this.makeScene(this.data.level));
       // console.log('ssss');
-    } else {
-      // 处理覆盖情况
-      this.checkCover(this.data.scene);
-    }
+    } else this.checkCover(this.data.scene); // 处理覆盖情况
     // 动画结束
     this.setData({
       animating: false
@@ -446,10 +462,15 @@ Page({
    */
   bindsoundSwitch(e) {
     // console.log(e.detail);
-    if (e.detail) console.log('开启');
+    if (e.detail) console.log('开启音效');
     else console.log('关闭音效');
     this.setData({
       soundSwitch: e.detail
+    });
+    wx.showToast({
+      title: e.detail?'开启音效':'关闭音效',
+      icon: 'none',
+      mask: true,
     })
   }
 })

@@ -12,7 +12,7 @@
   align-content: center;
   justify-content: center;align-items: center;
 }
-.setting-item .zhuan{
+.zhuan{
   position: absolute;
   animation: myfirst2 5s infinite linear;
 }
@@ -26,4 +26,17 @@ to {transform: rotate(359deg);}
 {
 from {transform: rotate(0deg);}
 to {transform: rotate(-359deg);}
+}
+/* 音量滑块 */
+.sliderBGM_content{
+  position: relative;
+  top: 0;
+}
+.body-view{
+  width: 100%;
+  transition: all .7s;
+}
+ .sliderBGM{
+  width: 100%;
+  transition: all .7s;
 }

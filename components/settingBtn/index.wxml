@@ -11,19 +11,24 @@
 		<view class="cu-bar bg-cyan justify-end light">
 			<view class="content">设置</view>
 			<view class="action" bindtap="switchSettingWindow" data-switch="false">
-				<text class="cuIcon-close text-red"></text>
+				<text class="cuIcon-close text-red "></text>
 			</view> 
 		</view>
 		<view class="padding-xl ">
 			<!-- <view>
         <switch class='red' bindchange="bgSwitchChang" class="{{switchB?'bgSwitch':''}}" checked="{{bgSwitch?true:false}}" color="#e54d42"></switch>
       </view> -->
-	<view class="cu-form-group">
+	<view class="cu-form-group shadow bg-white">
 		<view class="title">背景音乐</view>
 		<!-- #ifdef MP-ALIPAY -->
 		<switch bindchange="bindSwitch" class="red {{bgSwitch?'checked':''}}" checked="{{bgSwitch?true:false}}" color="#e54d42" data-type="bgSwitch"></switch>
 	</view>
-  <view class="cu-form-group">
+  <!-- <view class="sliderBGM_content margin-top">
+    <view class="body-view">
+      <slider class="sliderBGM" bindchange="sliderchangeBGM" show-value/>
+    </view>
+  </view> -->
+  <view class="cu-form-group margin-top shadow bg-white">
 		<view class="title">游戏音效：</view>
 		<switch bindchange="bindSwitch" class="orange radius {{soundSwitch?'checked':''}}" checked="{{soundSwitch?true:false}}" color="#e54d42" data-type="soundSwitch"></switch>
 	</view>

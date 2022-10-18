@@ -1,4 +1,3 @@
-
 App({
   onLaunch() {
     // 展示本地存储能力
@@ -12,7 +11,6 @@ App({
     //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
     //   }
     // })
-    
   },
   watch: function (ctx, obj) {
     Object.keys(obj).forEach(key => {
@@ -22,21 +20,16 @@ App({
     })
   },
   /**
-   * 播放音效
+   * 播放音效 (选牌、3连、洗牌、游戏结束 )
    * @param {*} params 参数（src、trigger 判断）
    */
   playSoundEffect:function (params) {
     let audios=wx.createInnerAudioContext();
-    audios.autoplay = true;//音效不循环播放
-    audios.volume=0.5;//音量
+    audios.volume=0.63;//音量
     // audios.stop();
+    //https://ss.hengyuwh.com/sss/ylgy/Sound/gameover.mp3
     audios.src=`https://ss.hengyuwh.com/sss/ylgy/Sound/${params.src}.mp3`;
-    // console.log(params.trigger?1:2);
-    if (params.trigger) {
-      audios.play();//播放；
-    }else{
-      audios.volume=0;
-    }
+    if (params.trigger) audios.play(); else audios.volume=0;
   },
 // 监听属性，并执行监听函数
 observer: function (data, key, val, fn) {
@@ -54,7 +47,7 @@ observer: function (data, key, val, fn) {
   })
 },
   globalData: {
-    innerAudioContextSoundEffect:wx.createInnerAudioContext()
+    // innerAudioContextSoundEffect:wx.createInnerAudioContext()
     // userInfo: null
   }
 })
