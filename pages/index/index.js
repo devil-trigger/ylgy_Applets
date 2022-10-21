@@ -7,7 +7,7 @@ Page({
   data: {
     scene: [], //元数据  （渲染的核心数据）
     icons: iconsArr, //所有的点击图标的icon列表 (数据在 util.js 编辑)
-    maxLevel:7, //最大关卡
+    maxLevel:5, //最大关卡
     level: 1, // 等级(当前关卡)
     queue: [], //被选中的牌的数据
     sortedQueue: {}, //排序内容
@@ -21,8 +21,6 @@ Page({
   },
 
   onLoad: function (e) {
-    // console.log(app);
-    // console.log(app.globalData.innerAudioContextSoundEffect);
     let levelList = new Array();
     for (let index = 0; index < this.data.maxLevel; index++) {
       levelList.push(`第 ${index+1} 关`)
@@ -347,11 +345,11 @@ Page({
     this.checkCover(this.makeScene(1));
   },
   /**
-   * 点击 图标，加入选中框 （ ------------- 核心点击游戏功能 -------------- ）
+   * 点击 图标，加入选中框 （ ---------------- 核心点击游戏功能 ------------------ ）
    */
   async clickSymbol(e) {
     // console.log(e);return
-    let idx = e.detail;
+    let idx = e.currentTarget.dataset.index;
     // 若已经完成了，就不处理
     if (this.data.finished || this.data.animating) return;
     // 拷贝一份Scene
@@ -472,5 +470,21 @@ Page({
       icon: 'none',
       mask: true,
     })
+  },
+  /**
+   * 设置最大关卡
+   * @param {*} e 事件对象
+   */
+  setMaxLevel(e){
+    console.log(e.detail);
+    let levelList = new Array();
+    for (let index = 0; index < e.detail; index++) {
+      levelList.push(`第 ${index+1} 关`)
+    }
+    this.setData({
+      maxLevel:e.detail,
+      levelList
+    })
+// console.log(this.data.levelList);
   }
 })

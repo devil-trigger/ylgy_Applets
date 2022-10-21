@@ -1,16 +1,16 @@
 <!-- 设置项 -->
-<settingBtn bind:bindsoundSwitch='bindsoundSwitch' soundSwitch="{{soundSwitch}}" modalName="{{modalName}}"></settingBtn>
+<settingBtn bind:bindsoundSwitch='bindsoundSwitch' bind:setMaxLevel="setMaxLevel" soundSwitch="{{soundSwitch}}" modalName="{{modalName}}" maxLevels="{{maxLevel}}"></settingBtn>
 <!-- 游戏失败 窗口 -->
 <gameOverModal modalName="{{modalName}}" soundSwitch="{{soundSwitch}}" bind:restart="restart"></gameOverModal>
 <view class="container">
-  <!-- 关卡选择器 -->
+  <!-- 关卡选择器  |  关卡标题 -->
   <levelSelect level="{{level}}" levelList="{{levelList}}" bind:bindPickerChange="bindPickerChange"></levelSelect>
   <view class="item">
     <!-- 场景 -->
     <view class="scene-container">
       <view class="scene-inner">
-        <view wx:for="{{scene}}" class="symbol" wx:key="index" style="transform: translateX({{item.status===0 ? item.x+'%' : item.status===1 ? sortedQueue[item.id]+'%' : '-1000%'}})  translateY({{item.status===0 ? item.y+'%' : 1035+'%'}}); opacity: {{item.status < 2 ? 1 : 0}} " bindtap="clickSymbol" data-index="{{index}}">
-          <view class="symbol-inner" style="background: {{item.isCover ? '#999' : 'white'}}">
+        <view wx:for="{{scene}}" class="symbol" wx:key="index" style="transform: translateX({{item.status===0 ? item.x+'%' : item.status===1 ? sortedQueue[item.id]+'%' : '-1000%'}})  translateY({{item.status===0 ? item.y+'%' : '42.5vh'}}); opacity: {{item.status < 2 ? 1 : 0}} " bindtap="clickSymbol" data-index="{{index}}">
+          <view class="symbol-inner flex justify-center align-center " style="background: {{item.isCover ? '#999' : 'white'}}">
             <!-- <img style="width:100% ;" src="{{item.icon}}" alt=""> -->
             <image style="width:100%;height:100%; " src="https://ss.hengyuwh.com/sss/ylgy/image/{{item.icon}}" alt="" mode="aspectFit"></image>
           </view>
